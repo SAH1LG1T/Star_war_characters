@@ -90,12 +90,12 @@ export default function CharactersPage() {
               <CharacterCard key={character.name} character={character} onClick={() => setSelectedCharacter(character)} />
             ))}
 
-          {(!loading && characters.length === 0) &&
-            <div className="min-h-[400px]">
-              <Fallback />
-            </div>
-          }
         </div>
+        {!loading && characters.length === 0 && (
+          <div className="min-h-[515px] flex items-center justify-center">
+            <Fallback />
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
@@ -115,7 +115,7 @@ export default function CharactersPage() {
 
 
         <button
-          disabled={page === Math.ceil(totalRecords / 10)}
+          disabled={page >= Math.ceil(totalRecords / 10) || totalRecords === 0}
           onClick={() => setPage((prev) => prev + 1)}
           className="
           cursor-pointer
@@ -127,7 +127,8 @@ export default function CharactersPage() {
           Next
         </button>
       </div>
-      <div className="flex justify-center">Showing page {page} out of {Math.ceil(totalRecords / 10)} </div>
+      {/* <div className="flex justify-center">Showing page {page} out of {Math.ceil(totalRecords / 10)} </div> */}
+      <div className="flex justify-center">{totalRecords > 0 ? `Showing page ${page} out of ${Math.ceil(totalRecords / 10)}`: "No pages to show"} </div>
 
       <Modal open={!!selectedCharacter} onClose={() => setSelectedCharacter(null)} character={selectedCharacter}>
         {selectedCharacter && (
